@@ -1,0 +1,342 @@
+/* BrightPath Learn help desk.
+   Direction: a printed report. One axis at 42% of the width, flat blocks of colour,
+   a didone for display and a geometric sans for reading. */
+
+:root {
+  /* Colour: white paper, black ink, electric blue for actions, red and black as whole fields. */
+  --bg: #ffffff;
+  --surface: #f3f3f3;
+  --ink: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #2436ff;
+  --accent-dark: #050a5c;
+  --accent-ink: #ffffff;
+  --red: #ff3b1f;
+
+  /* Type: five sizes in total. */
+  --display: "Bodoni Moda", Georgia, serif;
+  --text: "Jost", system-ui, sans-serif;
+  --step-small: 0.875rem;                               /* 14px */
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17-19px */
+  --step-lead: clamp(1.375rem, 1.1rem + 0.9vw, 1.875rem);  /* 22-30px */
+  --step-head: clamp(2.25rem, 1.3rem + 3.4vw, 4.25rem);    /* 36-68px */
+  --step-hero: clamp(3.25rem, 6vw, 6.5rem);                /* 52-104px */
+
+  /* Frame: equal outer margins, and the axis everything hangs from. */
+  --margin: 48px;
+  --axis: calc(42vw - var(--margin));
+  --gap: 160px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--step-body)/1.6 var(--text);
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-underline-offset: 0.2em; }
+p { margin: 0; }
+h1, h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.muted { color: var(--muted); }
+.frame { padding-inline: var(--margin); }
+
+/* Standalone links get a touch target of at least 24px; links inside sentences stay inline. */
+.wordmark, .top-links a, .top-action, .footer-top a, .footer-meta p:first-child a {
+  display: inline-block;
+  padding-block: 6px;
+}
+
+/* ---------- Top row: wordmark, two links on the axis, one action ---------- */
+.top {
+  display: grid;
+  grid-template-columns: var(--axis) 1fr auto;
+  align-items: baseline;
+  padding-block: 28px;
+}
+.wordmark { font: 500 var(--step-lead)/1 var(--display); text-decoration: none; letter-spacing: -0.01em; }
+.top-links { display: flex; gap: 32px; }
+.top-links a, .top-action { text-decoration: none; }
+.top-links a:hover, .top-action:hover { text-decoration: underline; }
+.top-action { color: var(--accent); font-weight: 500; }
+
+/* ---------- Hero: a gutterless mosaic, then the title and the ask box on the axis ---------- */
+.mosaic {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  height: clamp(200px, 32vh, 340px);
+  overflow: hidden;
+}
+.tile { width: 100%; height: 100%; overflow: hidden; }
+.tile img, img.tile {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+.tile-wide { grid-column: span 2; }
+.tile-blue { background: var(--accent); }
+.tile-red { background: var(--red); }
+
+.axis-row {
+  display: grid;
+  grid-template-columns: var(--axis) 1fr;
+  column-gap: 0;
+}
+.on-axis { display: contents; }      /* its children sit straight in the grid above */
+.hero-body { padding-top: 56px; }
+.hero-body > .on-axis > * { grid-column: 2; }
+.standfirst {
+  grid-column: 1; grid-row: 1;
+  align-self: end;                    /* bottom-aligned with the title's last line */
+  max-width: 30ch;
+  padding-right: 32px;
+}
+h1 { font-size: var(--step-hero); line-height: 0.95; letter-spacing: -0.03em; grid-row: 1; }
+h1 .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
+h1 .line > span { display: block; }
+
+/* The question box: a filled field and a square blue button. */
+.ask {
+  display: flex;
+  gap: 12px;
+  margin-top: 40px;
+  max-width: 760px;
+}
+.ask textarea {
+  flex: 1;
+  min-height: 64px;
+  resize: vertical;
+  padding: 18px 20px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.45;
+}
+.ask textarea::placeholder { color: var(--muted); }
+button { font: inherit; cursor: pointer; }
+#ask-button {
+  min-width: 128px;
+  min-height: 64px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 0;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 500;
+  transition: background-color 160ms ease, transform 120ms ease;
+}
+#ask-button:hover { background: var(--accent-dark); }
+#ask-button:active { transform: scale(0.97); }
+#ask-button:disabled { cursor: progress; background: var(--accent-dark); }
+
+.examples { margin-top: 16px; max-width: 760px; color: var(--muted); }
+.example {
+  padding: 4px 0;
+  margin-left: 14px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color 160ms ease;
+}
+.example:hover { color: var(--accent-dark); }
+
+/* The answer: set large, like a pull quote, with its source underneath. */
+.result { margin-top: 48px; max-width: 760px; }
+.answer { font: 500 var(--step-lead)/1.3 var(--display); letter-spacing: -0.01em; }
+.meta { margin-top: 16px; color: var(--muted); font-size: var(--step-small); }
+.meta a { display: inline-block; padding-block: 5px; color: var(--accent); font-weight: 500; }
+.error {
+  margin-top: 48px;
+  max-width: 760px;
+  padding: 20px 24px;
+  background: var(--red);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ---------- What it knows: heading across, the documents pushed right ---------- */
+.section { padding-top: var(--gap); }
+.statement-head {
+  font-size: var(--step-head);
+  text-indent: 3vw;
+}
+.knows-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  margin-top: 96px;
+}
+.knows-photo {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  align-self: end;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+.table-name { grid-column: 6; grid-row: 1; font-size: var(--step-small); color: var(--muted); padding-top: 8px; }
+.doc-table { grid-column: 7 / 13; grid-row: 1; }
+.doc-group {
+  padding: 16px 20px;
+  margin: 0 -20px 28px;
+  transition: background-color 400ms var(--ease), color 400ms var(--ease);
+}
+.doc-row {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  column-gap: 20px;
+  padding-block: 7px;
+}
+.doc-title { color: var(--muted); font-weight: 500; }
+/* The document an answer came from turns blue. */
+.doc-group.is-source { background: var(--accent); color: var(--accent-ink); }
+.doc-group.is-source .doc-title { color: var(--accent-ink); }
+
+/* ---------- How it answers: a black band with one drawn figure ---------- */
+.band {
+  margin-top: var(--gap);
+  padding-block: 128px;
+  background: var(--ink);
+  color: #ffffff;
+}
+.how-intro { max-width: 34rem; }
+.how-intro h2 { font-size: var(--step-head); max-width: 11ch; }
+.how-intro p { margin-top: 28px; }
+.diagram { display: block; width: 100%; height: auto; margin-top: 80px; }
+.diagram rect { transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+.js .diagram:not(.in) rect { opacity: 0; transform: translateY(14px); }
+.how-steps {
+  list-style: none;
+  margin: 48px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 48px;
+}
+.how-steps strong { display: block; font: 500 var(--step-lead)/1.2 var(--display); margin-bottom: 8px; }
+.how-steps li { color: #d6d6d6; max-width: 34ch; }
+
+/* ---------- Footer: the support address is the headline ---------- */
+.footer {
+  min-height: 90svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: 40px 32px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 30ch)) 1fr;
+  gap: 32px;
+  font-size: var(--step-small);
+}
+.footer-top a { justify-self: end; }
+.footer-mail h2 { font: inherit; letter-spacing: normal; }
+.mail {
+  display: block;
+  font: 500 clamp(2.5rem, 9.6vw, 9.5rem)/0.92 var(--display);
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  transition: opacity 200ms ease;
+}
+.mail span { display: block; }
+.mail:hover { opacity: 0.8; }
+.footer-meta {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+  font-size: var(--step-small);
+}
+.footer-meta p:last-child { text-align: right; }
+
+/* ---------- Motion: all transform and opacity, all switched off for reduced motion ---------- */
+.js .masked .line > span { transform: translateY(105%); }
+.js.loaded .masked .line > span { transform: none; transition: transform 900ms var(--ease); }
+.js.loaded .masked .line:nth-child(2) > span { transition-delay: 110ms; }
+
+.js .fade-up { opacity: 0; transform: translateY(16px); }
+.js.loaded .fade-up { opacity: 1; transform: none; transition: opacity 600ms ease 450ms, transform 700ms var(--ease) 450ms; }
+
+.js .reveal { opacity: 0; transform: translateY(24px); }
+.js .reveal.in { opacity: 1; transform: none; transition: opacity 600ms ease, transform 800ms var(--ease); }
+
+.js .result:not([hidden]), .js .error:not([hidden]) { animation: rise 500ms var(--ease); }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+
+.drift { animation: drift 24s ease-in-out infinite alternate; }
+@keyframes drift { to { transform: scale(1.12) translateX(-3%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .masked .line > span, .js .fade-up, .js .reveal, .js .diagram:not(.in) rect {
+    opacity: 1 !important; transform: none !important;
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  :root { --margin: 32px; --gap: 128px; }
+  .knows-photo { grid-column: 1 / 5; }
+  .table-name { display: none; }
+  .doc-table { grid-column: 5 / 13; }
+  .doc-row { grid-template-columns: 1fr; }
+  .doc-title { margin-bottom: 4px; }
+}
+
+/* ---------- Phone: the axis collapses to the left margin ---------- */
+@media (max-width: 720px) {
+  :root { --margin: 20px; --axis: 0px; --gap: 104px; }
+  .top { grid-template-columns: 1fr auto; padding-block: 20px; }
+  .top-links { display: none; }
+  .mosaic { grid-template-columns: repeat(4, 1fr); height: 22vh; }
+  .mosaic > :nth-child(4), .mosaic > :nth-child(5) { display: none; }
+  .axis-row { grid-template-columns: 1fr; }
+  .hero-body > .on-axis > * { grid-column: 1; }
+  h1 { grid-row: auto; font-size: 10.5vw; }
+  .standfirst { grid-row: auto; order: 1; align-self: auto; margin-top: 20px; padding: 0; color: var(--ink); }
+  .hero-body { display: flex; flex-direction: column; padding-top: 36px; }
+  .hero-body h1 { order: 0; }
+  .hero-body .ask { order: 2; }
+  .hero-body .examples { order: 3; }
+  .hero-body .result, .hero-body .error { order: 4; }
+  .ask { flex-direction: column; margin-top: 28px; }
+  #ask-button { min-height: 56px; }
+  .example { display: block; margin-left: 0; text-align: left; }
+  .statement-head { font-size: 9.5vw; text-indent: 0; }
+  .knows-grid { display: flex; flex-direction: column; margin-top: 48px; }
+  .doc-table { order: 1; }
+  .knows-photo { order: 2; width: 60%; align-self: flex-end; margin-top: 24px; }
+  .band { padding-block: 88px; }
+  .how-steps { grid-template-columns: 1fr; row-gap: 28px; }
+  .footer-top, .footer-meta { grid-template-columns: 1fr; gap: 12px; }
+  .footer-top a { justify-self: start; }
+  .footer-meta p:last-child { text-align: left; }
+  .mail { font-size: 9.2vw; }
+}

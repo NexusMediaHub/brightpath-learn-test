@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrightPath Learn help desk</title>
+  <meta name="description" content="Ask a question about BrightPath Learn. Every answer comes from the three help documents and names the one it used.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+  <!-- Mark that JS is running, so entrance animations only hide content when they can show it again. -->
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+
+  <header class="top frame">
+    <a class="wordmark" href="#top">BrightPath Learn</a>
+    <nav class="top-links" aria-label="Sections">
+      <a href="#knows">What it knows</a>
+      <a href="#how">How it answers</a>
+    </nav>
+    <a class="top-action" href="#contact">Contact support</a>
+  </header>
+
+  <main id="top">
+    <!-- Hero: a gutterless mosaic of library pictures and flat colour, then the title and the ask box. -->
+    <section class="hero">
+      <div class="mosaic">
+        <div class="tile">
+          <img class="drift" src="/static/img/catalogue-drawers.jpg" width="1920" height="1624"
+               alt="Wooden card-catalogue drawers, one pulled open to show its index cards">
+        </div>
+        <div class="tile tile-blue"></div>
+        <img class="tile tile-wide" src="/static/img/reading-room.jpg" width="1920" height="998"
+             alt="The domed main reading room of the Library of Congress, seen from the gallery">
+        <img class="tile" src="/static/img/catalogue-card.jpg" width="1635" height="1047"
+             alt="A typed library catalogue card from 1898">
+        <div class="tile tile-red"></div>
+      </div>
+
+      <div class="frame axis-row hero-body">
+        <p class="standfirst">
+          Ask about lessons, coaching or your account. Every answer comes from the three
+          BrightPath help documents and names the one it used.
+        </p>
+
+        <div class="on-axis">
+          <h1 class="masked">
+            <span class="line"><span>Answers from the</span></span>
+            <span class="line"><span>BrightPath docs</span></span>
+          </h1>
+
+          <form id="ask-form" class="ask">
+            <label for="question" class="visually-hidden">Your question</label>
+            <textarea id="question" name="question" rows="2" maxlength="500" required
+                      placeholder="How do I save my progress on a lesson?"></textarea>
+            <button id="ask-button" type="submit">Ask</button>
+          </form>
+
+          <p class="examples fade-up">
+            Try
+            <button type="button" class="example">When is group coaching?</button>
+            <button type="button" class="example">How do I reset my password?</button>
+            <button type="button" class="example">Can I get a refund?</button>
+          </p>
+
+          <!-- The answer appears here. aria-live makes screen readers read it out. -->
+          <div id="result" class="result" aria-live="polite" hidden>
+            <p id="answer" class="answer"></p>
+            <p id="meta" class="meta"></p>
+          </div>
+          <div id="error" class="error" role="alert" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What it knows: the full text of the three documents, filled in from GET /documents. -->
+    <section id="knows" class="section frame">
+      <h2 class="statement-head reveal">Everything it knows</h2>
+      <div class="knows-grid">
+        <img class="knows-photo reveal" src="/static/img/catalogue-desk.jpg" width="1920" height="1440" loading="lazy"
+             alt="A library catalogue desk with rows of numbered index-card drawers">
+        <p class="table-name reveal">Documents</p>
+        <div id="doc-table" class="doc-table">
+          <p class="muted">Loading the documents…</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it answers: many sentences in, one checked answer out. -->
+    <section id="how" class="band">
+      <div class="frame">
+        <div class="how-intro">
+          <h2 class="reveal">How an answer gets checked</h2>
+          <p class="reveal">
+            A small language model writes the answer. Plain code then checks it before you see
+            it, so a confident guess never reaches the page.
+          </p>
+        </div>
+        <svg id="diagram" class="diagram" viewBox="0 0 900 200" role="img"
+             aria-label="Scattered squares are pulled into a narrow ribbon, then laid out in neat rows"></svg>
+        <ol class="how-steps">
+          <li class="reveal"><strong>Read</strong>Every question is sent with all three documents. They are short, so nothing is searched or left out.</li>
+          <li class="reveal"><strong>Check</strong>Sources that don't exist are dropped. An answer that shares no words with its source is thrown away.</li>
+          <li class="reveal"><strong>Answer</strong>You get the answer and its document, or a plain "not in the documents" and the support address.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="footer">
+    <div class="frame footer-top">
+      <p>Support is open Monday to Friday, 09:00–17:00 UTC.</p>
+      <p>Pricing, refunds and job placement are not in the help documents. Ask support.</p>
+      <a href="#top">Back to top</a>
+    </div>
+    <div class="frame footer-mail">
+      <h2><a class="mail" href="mailto:support@brightpath.example" aria-label="Email support at support@brightpath.example"><span>support@</span><span>brightpath.example</span></a></h2>
+    </div>
+    <div class="frame footer-meta">
+      <p><a href="/health">Model status</a> · <a href="/docs">API</a></p>
+      <p>
+        Photographs, via Wikimedia Commons:
+        <a href="https://commons.wikimedia.org/w/index.php?curid=483741">card catalogue</a> by Dr. Marcus Gossler, CC BY-SA 3.0;
+        <a href="https://commons.wikimedia.org/w/index.php?curid=124286716">reading room</a> by Thomas Wozniak, CC BY-SA 4.0;
+        <a href="https://commons.wikimedia.org/w/index.php?curid=126429903">catalogue card</a> by Pavel Trnka, CC BY-SA 4.0;
+        <a href="https://commons.wikimedia.org/w/index.php?curid=71077267">catalogue desk</a> by Ricardo from Manchester, CC BY 2.0.
+      </p>
+      <p>BrightPath Learn is fictional · 2026</p>
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
